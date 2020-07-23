@@ -21,6 +21,10 @@
 #include "simplemotion_defs.h"
 #include "simplemotion_types.h"
 
+#ifdef ARDUINO
+#include <Arduino.h>
+#endif
+
 
 #ifdef __cplusplus
 extern "C"{
@@ -51,7 +55,9 @@ extern "C"{
     ---Hint: D2XX driver supports listing available devices. See: smGetNumberOfDetectedBuses() and smGetBusDeviceDetails()
 	-return value: handle to be used with all other commands, -1 if fails
 	*/
+#ifndef ARDUINO
 LIB smbus smOpenBus( const char * devicename );
+#endif
 
 /** Same as smOpenBus but with user supplied port driver callbacks */
 LIB smbus smOpenBusWithCallbacks(const char *devicename, BusdeviceOpen busOpenCallback, BusdeviceClose busCloseCallback, BusdeviceReadBuffer busReadCallback, BusdeviceWriteBuffer busWriteCallback , BusdeviceMiscOperation busPurgeCallback);
@@ -103,7 +109,9 @@ smVerbosityLevel:
  * that definition from simplemotion.h or define it application wide with compiler flag, i.e. -DENABLE_DEBUG_PRINTS).
  * Enabling it may slow down & grow binary significantly especially on MCU systems.
  */
+#ifndef ARDUINO
 LIB void smSetDebugOutput( smVerbosityLevel level, FILE *stream );
+#endif
 
 /** This function returns all occurred SM_STATUS bits after smOpenBus or resetCumulativeStatus call*/
 LIB SM_STATUS getCumulativeStatus( const smbus handle );
@@ -278,5 +286,10 @@ LIB SM_STATUS smCheckDeviceCapabilities( const smbus handle, const int nodeAddre
 
 #ifdef __cplusplus
 }
+
+// Print is a class, so it needs to be outside of the extern C block.
+#ifdef ARDUINO
+LIB void smSetDebugOutput( smVerbosityLevel level, Print *stream );
+#endif
 #endif
 #endif // SIMPLEMOTION_H

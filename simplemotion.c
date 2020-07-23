@@ -18,7 +18,11 @@ SM_STATUS smParseReturnData( smbus handle, smuint8 data );
 #define HANDLE_STAT_AND_RET(stat,returndata) { if(returndata==RET_INVALID_CMD||returndata==RET_INVALID_PARAM) return SM_ERR_PARAMETER; if(stat!=SM_OK) return (stat); }
 
 enum RecvState {WaitCmdId,WaitAddr,WaitPayloadSize,WaitPayload,WaitCrcHi,WaitCrcLo};
+#if defined(ARDUINO) && defined(__cplusplus)
+Print *smDebugOut=NULL;
+#else
 FILE *smDebugOut=NULL;
+#endif
 
 //useful macros from extracting/storing multibyte values from/to byte buffer
 #define bufput32bit(buf, pos, val) *((smuint32*)(smuint8*)((buf)+(pos)))=((smuint32)(val))
@@ -81,8 +85,14 @@ void smSleepMs(int millisecs)
 {
     Sleep(millisecs);
 }
+
+#elif defined(ARDUINO)
+void smSleepMs(int millisecs)
+{
+    delay(millisecs);
+}
 #else
-#warning Make sure to implement own smSleepMs function for your platform as it is not one of supported ones (unix/win). For more info, see simplemotion_private.h.
+#warning Make sure to implement own smSleepMs function for your platform as it is not one of supported ones (unix/win/arduino). For more info, see simplemotion_private.h.
 #endif
 
 
@@ -98,7 +108,11 @@ void smDebug( smbus handle, smVerbosityLevel verbositylevel, char *format, ...)
     if(smDebugOut!=NULL && verbositylevel <= smDebugThreshold )
     {
         #ifdef SM_ENABLE_DEBUG_PREFIX_STRING //user app may define this macro if need to write custom prefix, if defined, then define also "const char *smDebugPrefixString="my string";" somewhere in your app.
+        #if defined(ARDUINO) && defined(__cplusplus)
+        smDebugOut->println(smDebugPrefixString);
+        #else
         fprintf(smDebugOut, smDebugPrefixString);
+        #endif
         #endif
 
         va_start(fmtargs,format);
@@ -108,22 +122,46 @@ void smDebug( smbus handle, smVerbosityLevel verbositylevel, char *format, ...)
         {
             if(smIsHandleOpen(handle)==smtrue)
             {
+                #if defined(ARDUINO) && defined(__cplusplus)
+                smDebugOut->print(smBus[handle].busDeviceName);
+                smDebugOut->print(": ");
+                smDebugOut->println(buffer);
+                #else
                 fprintf(smDebugOut,"%s: %s",smBus[handle].busDeviceName, buffer);
+                #endif
             }
             else if(handle==DEBUG_PRINT_RAW)
             {
+                #if defined(ARDUINO) && defined(__cplusplus)
+                smDebugOut->println(buffer);
+                #else
                 fprintf(smDebugOut,"%s", buffer);
+                #endif
             }
             else
             {
+                #if defined(ARDUINO) && defined(__cplusplus)
+                smDebugOut->print("(bad smbus handle): ");
+                smDebugOut->println(buffer);
+                #else    
                 fprintf(smDebugOut,"(bad smbus handle): %s", buffer);
+                #endif
             }
         }
         else
-            fprintf(smDebugOut,"SMLib: %s",buffer);//no handle given
+            #if defined(ARDUINO) && defined(__cplusplus)
+            smDebugOut->print("SMLib: ");
+            smDebugOut->println(buffer);
+            #else
+            fprintf(smDebugOut,"SMLib: %s", buffer);//no handle given
+            #endif
 
         #ifdef SM_ENABLE_DEBUG_SUFFIX_STRING //user app may define this macro if need to write custom suffix, if defined, then define also "const char *smDebugSuffixString="my string";" somewhere in your app.
+        #if defined(ARDUINO) && defined(__cplusplus)
+        smDebugOut->println(smDebugSuffixString);
+        #else
         fprintf(smDebugOut, smDebugSuffixString);
+        #endif
         #endif
     }
 }
@@ -224,6 +262,7 @@ smbool smIsHandleOpen( const smbus handle )
 -devicename: on Windows COM port as "COMx" or on unix /dev/ttySx or /dev/ttyUSBx where x=port number
 -return value: integer handle to be used with all other commands, -1 if fails
 */
+#ifndef ARDUINO
 smbus smOpenBus( const char * devicename )
 {
     int handle;
@@ -250,6 +289,7 @@ smbus smOpenBus( const char * devicename )
     smBus[handle].opened=smtrue;
     return handle;
 }
+#endif
 
 /** same as smOpenBus but with user supplied port driver callbacks */
 smbus smOpenBusWithCallbacks( const char *devicename, BusdeviceOpen busOpenCallback, BusdeviceClose busCloseCallback, BusdeviceReadBuffer busReadCallback, BusdeviceWriteBuffer busWriteCallback, BusdeviceMiscOperation busMiscOperationCallback )
@@ -774,7 +814,11 @@ SM_STATUS smReceiveReturnPacket( smbus bushandle )
 
 
 /** Set stream where debug output is written. By default nothing is written. */
+#if defined(ARDUINO) && defined(__cplusplus)
+LIB void smSetDebugOutput( smVerbosityLevel level, Print *stream )
+#else
 LIB void smSetDebugOutput( smVerbosityLevel level, FILE *stream )
+#endif
 {
     smDebugThreshold=level;
     smDebugOut=stream;

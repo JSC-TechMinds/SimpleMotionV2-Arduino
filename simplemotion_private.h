@@ -28,7 +28,13 @@ extern unsigned long SMBusBaudrate; //the next opened port (with smOpenBus) will
 extern const smuint8 table_crc16_hi[];
 extern const smuint8 table_crc16_lo[];
 extern const smuint8 table_crc8[];
+
+#if defined(ARDUINO) && defined(__cplusplus)
+extern Print *smDebugOut; // Arduino Serial
+#else
 extern FILE *smDebugOut; //such as stderr or file handle. if NULL, debug info disbled
+#endif
+
 extern smuint16 readTimeoutMs;
 
 #define DEBUG_PRINT_RAW 0x524157
