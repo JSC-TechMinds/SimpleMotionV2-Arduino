@@ -5,6 +5,9 @@
 #include <ctype.h>
 #include <string.h>
 
+// Disable code with dummy implementation
+#ifndef ARDUINO
+
 #if defined(_WIN32)
 #if defined(CM_NONE)
 #undef CM_NONE
@@ -371,3 +374,31 @@ int parseIpAddress(const char *s, char *ip, unsigned short *port)
     return 0;
 }
 
+#else
+// Dummy implementations for Arduino platform
+smBusdevicePointer tcpipPortOpen(const char * devicename, smint32 baudrate_bps, smbool *success)
+{
+    *success=smfalse;
+
+    return (smBusdevicePointer) NULL;
+}
+
+int tcpipPortRead(smBusdevicePointer busdevicePointer, unsigned char *buf, int size)
+{
+    return 0;
+}
+
+int tcpipPortWrite(smBusdevicePointer busdevicePointer, unsigned char *buf, int size)
+{
+    return 0;
+}
+
+smbool tcpipMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMiscOperationType operation)
+{
+    return smfalse;
+}
+
+void tcpipPortClose(smBusdevicePointer busdevicePointer)
+{
+}
+#endif

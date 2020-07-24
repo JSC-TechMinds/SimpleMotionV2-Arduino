@@ -21,9 +21,7 @@
 #include "simplemotion_defs.h"
 #include "simplemotion_types.h"
 
-#ifdef ARDUINO
-#include <Arduino.h>
-#endif
+#include "drivers/arduino/arduino_helper.h"
 
 
 #ifdef __cplusplus
@@ -35,7 +33,7 @@ extern "C"{
 #define SMBUSDEVICE_RETURN_ON_OPEN_FAIL NULL
 
 
-//max number of simultaneously opened buses. change this and recompiple SMlib if
+//max number of simultaneously opened buses. change this and recompile SMlib if
 //necessary (to increase channels or reduce to save memory)
 //#define SM_MAX_BUSES 5
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +53,7 @@ extern "C"{
     ---Hint: D2XX driver supports listing available devices. See: smGetNumberOfDetectedBuses() and smGetBusDeviceDetails()
 	-return value: handle to be used with all other commands, -1 if fails
 	*/
-#ifndef ARDUINO
 LIB smbus smOpenBus( const char * devicename );
-#endif
 
 /** Same as smOpenBus but with user supplied port driver callbacks */
 LIB smbus smOpenBusWithCallbacks(const char *devicename, BusdeviceOpen busOpenCallback, BusdeviceClose busCloseCallback, BusdeviceReadBuffer busReadCallback, BusdeviceWriteBuffer busWriteCallback , BusdeviceMiscOperation busPurgeCallback);
@@ -286,10 +282,5 @@ LIB SM_STATUS smCheckDeviceCapabilities( const smbus handle, const int nodeAddre
 
 #ifdef __cplusplus
 }
-
-// Print is a class, so it needs to be outside of the extern C block.
-#ifdef ARDUINO
-LIB void smSetDebugOutput( smVerbosityLevel level, Print *stream );
-#endif
 #endif
 #endif // SIMPLEMOTION_H

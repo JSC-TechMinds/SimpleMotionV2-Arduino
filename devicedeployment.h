@@ -9,11 +9,11 @@
  * - Add some way of reading binary checksum from .gdf file or settings file. Now user must read it from device and store that number somewhere manually.
  */
 
-// Disable compilation on Arduino boards
-#ifndef ARDUINO
-
 #ifndef SMDEPLOYMENTTOOL_H
 #define SMDEPLOYMENTTOOL_H
+
+// Disable compilation on Arduino boards
+#ifndef ARDUINO
 
 #ifdef WIN32
 //dll specs
@@ -186,5 +186,5 @@ smbool smGetDeviceFirmwareUniqueID( smbus smhandle, int deviceaddress, smuint32 
 #ifdef __cplusplus
 }
 #endif
-#endif // SMDEPLOYMENTTOOL_H
 #endif // ARDUINO
+#endif // SMDEPLOYMENTTOOL_H

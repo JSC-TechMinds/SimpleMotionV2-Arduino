@@ -4,6 +4,7 @@
 #include "drivers/serial/pcserialport.h"
 #include "drivers/tcpip/tcpclient.h"
 #include "drivers/ftdi_d2xx/sm_d2xx.h"
+#include "drivers/arduino/controllino_rs485.h"
 
 #include <string.h>
 #include <errno.h>
@@ -59,6 +60,10 @@ smbusdevicehandle smBDOpen( const char *devicename )
 #ifdef ENABLE_BUILT_IN_DRIVERS
     smbusdevicehandle h;
 
+#ifdef ARDUINO
+    h=smBDOpenWithCallbacks( devicename, controllinoRs485PortOpen, controllinoRs485PortClose, controllinoRs485PortRead, controllinoRs485PortWrite, controllinoRs485PortMiscOperation );
+    if(h>=0) return h;//was success
+#else
     //try opening with all drivers:
     h=smBDOpenWithCallbacks( devicename, serialPortOpen, serialPortClose, serialPortRead, serialPortWrite, serialPortMiscOperation );
     if(h>=0) return h;//was success
@@ -68,6 +73,7 @@ smbusdevicehandle smBDOpen( const char *devicename )
     h=smBDOpenWithCallbacks( devicename, d2xxPortOpen, d2xxPortClose, d2xxPortRead, d2xxPortWrite, d2xxPortMiscOperation );
     if(h>=0) return h;//was success
 #endif
+#endif // Arduino
 #else
     smDebug( -1, SMDebugHigh, "smBDOpen ENABLE_BUILT_IN_DRIVERS is not defined during SM library compile time. smOpenBus not supported in this case, see README.md.");
 #endif
