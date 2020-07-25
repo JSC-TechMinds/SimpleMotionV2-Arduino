@@ -10,13 +10,11 @@
  */
 
 
+#ifndef ARDUINO
 
 #include "pcserialport.h"
 #include "user_options.h"
 #include "simplemotion_private.h" //needed for timeout variable
-
-// Disable code with dummy implementation
-#ifndef ARDUINO
 
 #if defined(__unix__) || defined(__APPLE__)
 
@@ -389,31 +387,5 @@ smbool serialPortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMis
 }
 
 #endif//windows
-#else
-// Dummy implementations for Arduino platform
-smBusdevicePointer serialPortOpen(const char * port_device_name, smint32 baudrate_bps, smbool *success)
-{
-    *success=smfalse;
 
-    return (smBusdevicePointer) NULL;
-}
-
-smint32 serialPortRead(smBusdevicePointer busdevicePointer, smuint8 *buf, smint32 size)
-{
-    return 0;
-}
-
-smint32 serialPortWrite(smBusdevicePointer busdevicePointer, unsigned char *buf, smint32 size)
-{
-    return 0;
-}
-
-smbool serialPortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMiscOperationType operation)
-{
-    return smfalse;
-}
-
-void serialPortClose(smBusdevicePointer busdevicePointer)
-{
-}
-#endif
+#endif // ARDUINO

@@ -16,20 +16,24 @@
 #include "user_options.h"
 #include "simplemotion_private.h" //needed for timeout variable
 
+Print* consoleOut = NULL;
+
 void smSleepMs(int millisecs)
 {
     delay(millisecs);
 }
 
-LIB void smSetDebugOutput( smVerbosityLevel level )
+LIB void smSetDebugOutput( smVerbosityLevel level, ArduinoSerial serial )
 {
     smDebugThreshold=level;
-    // Serial.begin(9600);
+    consoleOut = (Print*) serial;
 }
 
 #ifdef ENABLE_DEBUG_PRINTS
 void arduinoPrintMessage(const char* message) {
-    Serial.print(message);
+    if (consoleOut != NULL) {
+        consoleOut->print(message);
+    }
 }
 #endif // DEBUG PRINTS
 

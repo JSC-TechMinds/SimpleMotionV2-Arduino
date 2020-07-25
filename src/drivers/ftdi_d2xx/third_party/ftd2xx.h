@@ -41,8 +41,6 @@ kernel & user mode
 #ifndef FTD2XX_H
 #define FTD2XX_H
 
-#ifndef ARDUINO
-
 #ifdef _WIN32
 // Compiling on Windows
 #include <windows.h>
@@ -1443,7 +1441,6 @@ extern "C" {
 }
 #endif
 
-#endif // Arduino
 
 #endif	/* FTD2XX_H */
 

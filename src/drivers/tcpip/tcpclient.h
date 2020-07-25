@@ -1,6 +1,8 @@
 #ifndef tcpclient_INCLUDED
 #define tcpclient_INCLUDED
 
+#ifndef ARDUINO
+
 #include "simplemotion_private.h"
 
 #ifdef __cplusplus
@@ -24,6 +26,8 @@ int parseIpAddress(const char *s, char *ip, unsigned short *port);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif // ARDUINO
 
 #endif
 

@@ -15,10 +15,10 @@
 #include "simplemotion_private.h" //needed for timeout variable
 
 #ifdef ARDUINO
-#include <Arduino.h>
+#include "arduino_helper.h"
 #endif
 
-#if (defined(CONTROLLINO_MAXI) || defined(CONTROLLINO_MEGA) || defined(CONTROLLINO_MAXI_AUTOMATION))
+#if defined(CONTROLLINO_MAXI) || defined(CONTROLLINO_MEGA)
 #include <Controllino.h>
 
 smBusdevicePointer controllinoRs485PortOpen(const char * port_device_name, smint32 baudrate_bps, smbool *success)
@@ -41,12 +41,7 @@ smBusdevicePointer controllinoRs485PortOpen(const char * port_device_name, smint
 smint32 controllinoRs485PortRead(smBusdevicePointer busdevicePointer, smuint8 *buf, smint32 size)
 {
     smint32 n = 0;
-
-    // Read only when there's data
-    if (Serial3.available() > 0) {
-          n = Serial3.readBytes(buf, size);
-
-    }
+    n = Serial3.readBytes(buf, size);
 
     return n;
 }
@@ -84,7 +79,7 @@ smbool controllinoRs485PortMiscOperation(smBusdevicePointer busdevicePointer, Bu
         return smtrue;
         break;
     default:
-        smDebug( -1, SMDebugLow, "Serial port error: given MiscOperataion not implemented\n");
+        //FIXME smDebug( -1, SMDebugLow, "Serial port error: given MiscOperataion not implemented\n");
         return smfalse;
         break;
     }
@@ -93,36 +88,5 @@ smbool controllinoRs485PortMiscOperation(smBusdevicePointer busdevicePointer, Bu
 void controllinoRs485PortClose(smBusdevicePointer busdevicePointer)
 {
     Serial3.end();
-}
-#else
-// Dummy implementations for other Arduino boards or other platforms.
-smBusdevicePointer controllinoRs485PortOpen(const char * port_device_name, smint32 baudrate_bps, smbool *success)
-{
-    smDebug( -1, SMDebugLow, "Unsupported Arduino board. Please use Controllino Maxi, Maxi Automation or Mega.");
-    *success=smfalse;
-
-    return (smBusdevicePointer) NULL;
-}
-
-
-smint32 controllinoRs485PortRead(smBusdevicePointer busdevicePointer, smuint8 *buf, smint32 size)
-{
-    return 0;
-}
-
-
-
-smint32 controllinoRs485PortWrite(smBusdevicePointer busdevicePointer, unsigned char *buf, smint32 size)
-{
-    return 0;
-}
-
-smbool controllinoRs485PortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMiscOperationType operation)
-{
-    return smfalse;
-}
-
-void controllinoRs485PortClose(smBusdevicePointer busdevicePointer)
-{
 }
 #endif

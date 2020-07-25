@@ -17,6 +17,8 @@
 #ifndef PCSERAILPORT_H
 #define PCSERAILPORT_H
 
+#ifndef ARDUINO
+
 #include "simplemotion_private.h"
 
 #ifdef __cplusplus
@@ -35,6 +37,8 @@ smbool serialPortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMis
 #ifdef __cplusplus
 }
 #endif
+
+#endif // ARDUINO
 
 #endif
 

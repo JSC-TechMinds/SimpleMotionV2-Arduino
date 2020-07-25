@@ -1,8 +1,6 @@
 #ifndef __WINDOWS_TYPES__
 #define __WINDOWS_TYPES__
 
-#ifndef ARDUINO
-
 #define WINAPI
 
 typedef unsigned int            DWORD;
@@ -152,7 +150,5 @@ typedef struct timeval FILETIME;
 #ifndef INVALID_HANDLE_VALUE
 #define INVALID_HANDLE_VALUE 0xFFFFFFFF
 #endif
-
-#endif // Arduino
 
 #endif /* __WINDOWS_TYPES__ */

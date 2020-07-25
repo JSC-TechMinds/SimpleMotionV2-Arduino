@@ -11,6 +11,8 @@
 #ifndef SM_D2XX_H
 #define SM_D2XX_H
 
+#ifndef ARDUINO
+
 #include "simplemotion_private.h"
 
 #ifdef __cplusplus
@@ -35,6 +37,8 @@ smbool d2xxGetBusDeviceDetails( smint index, SM_BUS_DEVICE_INFO *info );
 #ifdef __cplusplus
 }
 #endif
+
+#endif // ARDUINO
 
 #endif
 

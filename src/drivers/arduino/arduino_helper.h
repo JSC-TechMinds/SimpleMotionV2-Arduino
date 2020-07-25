@@ -18,6 +18,8 @@
 #include "simplemotion_private.h"
 #include <Arduino.h>
 
+typedef void* ArduinoSerial;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,7 +52,7 @@ smVerbosityLevel:
  *
  * Also note the Print*, which expects a pointer to the Arduino Serial object.
  */
-LIB void smSetDebugOutput( smVerbosityLevel level );
+LIB void smSetDebugOutput( smVerbosityLevel level, ArduinoSerial serial );
 
 //smDebug: prints debug info to smDebugOut stream. If no handle available, set it to -1, or if wish to print as raw text, set handle to DEBUG_PRINT_RAW.
 //set verbositylevel according to frequency of prints made.

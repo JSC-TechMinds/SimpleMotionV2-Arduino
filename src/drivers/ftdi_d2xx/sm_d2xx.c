@@ -7,6 +7,8 @@
  *      Author: Tero Kontkanen
  */
 
+#ifndef ARDUINO 
+
 #include "drivers/ftdi_d2xx/sm_d2xx.h"
 #include "simplemotion_private.h" //needed for timeout variable
 #include "drivers/ftdi_d2xx/third_party/ftd2xx.h"
@@ -14,8 +16,7 @@
 #include <string.h>
 #include <simplemotion.h>
 
-// Disable code with dummy implementation
-#ifndef ARDUINO
+
 static int stringToNumber( const char *str, smbool *ok )
 {
     int len=strlen(str);
@@ -307,39 +308,4 @@ smbool d2xxGetBusDeviceDetails( smint index, SM_BUS_DEVICE_INFO *info )
     return smfalse;
 }
 
-#else
-// Dummy implementations for Arduino platform
-smBusdevicePointer d2xxPortOpen(const char *port_device_name, smint32 baudrate_bps, smbool *success)
-{
-    *success=smfalse;
-
-    return (smBusdevicePointer) NULL;
-}
-
-smint32 d2xxPortRead(smBusdevicePointer busdevicepointer, unsigned char *buf, smint32 size)
-{
-    return 0;
-}
-
-smint32 d2xxPortWrite(smBusdevicePointer busdevicepointer, unsigned char *buf, smint32 size)
-{
-    return 0;
-}
-
-smbool d2xxPortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMiscOperationType operation)
-{
-    return smfalse;
-}
-
-void d2xxPortClose(smBusdevicePointer busdevicepointer)
-{
-}
-
-smint d2xxGetNumberOfDetectedBuses() {
-    return 0;
-}
-
-smbool d2xxGetBusDeviceDetails( smint index, SM_BUS_DEVICE_INFO *info ) {
-    return smfalse;
-}
-#endif
+#endif // ARDUINO

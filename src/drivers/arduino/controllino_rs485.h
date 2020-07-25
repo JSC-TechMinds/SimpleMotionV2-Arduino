@@ -12,6 +12,8 @@
 #ifndef CONTROLLINO_RS485_H
 #define CONTROLLINO_RS485_H
 
+#if defined(CONTROLLINO_MAXI) || defined(CONTROLLINO_MEGA)
+
 #include "simplemotion_private.h"
 
 #ifdef __cplusplus
@@ -30,6 +32,8 @@ smbool controllinoRs485PortMiscOperation(smBusdevicePointer busdevicePointer, Bu
 #ifdef __cplusplus
 }
 #endif
+
+#endif // Controllino Maxi/Mega
 
 #endif
 
