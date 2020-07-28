@@ -10,6 +10,7 @@
  */
 
 
+#ifndef ARDUINO
 
 #include "pcserialport.h"
 #include "user_options.h"
@@ -386,3 +387,5 @@ smbool serialPortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMis
 }
 
 #endif//windows
+
+#endif // ARDUINO

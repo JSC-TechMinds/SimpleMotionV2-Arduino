@@ -28,7 +28,12 @@ extern unsigned long SMBusBaudrate; //the next opened port (with smOpenBus) will
 extern const smuint8 table_crc16_hi[];
 extern const smuint8 table_crc16_lo[];
 extern const smuint8 table_crc8[];
+#ifdef ARDUINO
+//if debug message has priority this or above will be printed to debug stream
+extern smVerbosityLevel smDebugThreshold;
+#else
 extern FILE *smDebugOut; //such as stderr or file handle. if NULL, debug info disbled
+#endif
 extern smuint16 readTimeoutMs;
 
 #define DEBUG_PRINT_RAW 0x524157
@@ -37,7 +42,7 @@ extern smuint16 readTimeoutMs;
 //I.e SMDebugLow=low frequency, so it gets displayed when global verbosity level is set to at least Low or set it to Trace which gets filtered
 //out if global verbisity level is set less than SMDebugTrace
 #ifdef ENABLE_DEBUG_PRINTS
-void smDebug( smbus handle, smVerbosityLevel verbositylevel, char *format, ...);
+void smDebug( smbus handle, smVerbosityLevel verbositylevel, const char *format, ...);
 #else
 #define smDebug(...) {}
 #endif

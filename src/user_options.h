@@ -11,7 +11,12 @@
 
 //max number of simultaneously opened buses. change this and recompiple SMlib if
 //necessary (to increase channels or reduce to save memory)
+#ifdef ARDUINO
+#define ENABLE_BUILT_IN_DRIVERS
+#define SM_MAX_BUSES 1
+#else
 #define SM_MAX_BUSES 10
+#endif
 
 
 #endif // USER_OPTIONS_H

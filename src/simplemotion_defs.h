@@ -81,7 +81,14 @@
 
 #ifndef BV
 //bitvise shifts
+#ifdef ARDUINO
+/* Int on Arduino is only 2 bytes, which is not enough
+ * for all values defined here. We'll use long instead.
+ */
+#define BV(bit) (1L<<(bit))
+#else
 #define BV(bit) (1<<(bit))
+#endif
 #define BVL(bit) (1L<<(bit))
 #endif
 

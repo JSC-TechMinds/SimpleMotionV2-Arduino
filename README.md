@@ -1,14 +1,21 @@
-[![Linux Build Status](https://travis-ci.org/GraniteDevices/SimpleMotionV2.svg?branch=master)](https://travis-ci.org/GraniteDevices/SimpleMotionV2)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/GraniteDevices/SimpleMotionV2)](https://ci.appveyor.com/project/TeroK/simplemotionv2)
+[![Linux Build Status](https://travis-ci.com/JSC-electronics/SimpleMotionV2-Arduino.svg?branch=master)](https://travis-ci.com/github/JSC-electronics/SimpleMotionV2-Arduino)
 
-SimpleMotionV2
-==============
+SimpleMotionV2 for Arduino
+==========================
 
 This is a SimpleMotion V2 library, which is an API to control motor controller from any programmable platform, such as PC (Linux, Win, Mac), Rasperry Pi, MCU or PLC system.
 
 For main documentation, see:
 http://granitedevices.com/wiki/SimpleMotion_V2
 
+# Arduino support
+In order to add support for Arduino, we had to fork the original SimpleMotion V2 library. Arduino library specification requires several changes (like adding an `examples` folder, library manifest, etc.). Upstreaming all Arduino changes into a generic, multi-platform repository doesn't make sense. Instead, we'll keep maintaining this version.
+
+## Supported features
+All features, which could be ported into Arduino, were adapted. We've modified all compulsory files, and also the `bufferedmotion.c/.h` library for buffered motion stream applications.
+
+## C++ Issue
+Arduino IDE determines whether a library is C-compatible or C++-compatible based on file extensions. In order to compile the main `simplemotion.c` library in C++ mode, we had to rename it to `simplemotion.cpp`. Otherwise, we couldn't call object methods, like the `Serial.println(...)`.
 
 Files & usage
 =============

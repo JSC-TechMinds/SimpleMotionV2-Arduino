@@ -21,6 +21,8 @@
 #include "simplemotion_defs.h"
 #include "simplemotion_types.h"
 
+#include "drivers/arduino/arduino_helper.h"
+
 
 #ifdef __cplusplus
 extern "C"{
@@ -31,7 +33,7 @@ extern "C"{
 #define SMBUSDEVICE_RETURN_ON_OPEN_FAIL NULL
 
 
-//max number of simultaneously opened buses. change this and recompiple SMlib if
+//max number of simultaneously opened buses. change this and recompile SMlib if
 //necessary (to increase channels or reduce to save memory)
 //#define SM_MAX_BUSES 5
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +105,9 @@ smVerbosityLevel:
  * that definition from simplemotion.h or define it application wide with compiler flag, i.e. -DENABLE_DEBUG_PRINTS).
  * Enabling it may slow down & grow binary significantly especially on MCU systems.
  */
+#ifndef ARDUINO
 LIB void smSetDebugOutput( smVerbosityLevel level, FILE *stream );
+#endif
 
 /** This function returns all occurred SM_STATUS bits after smOpenBus or resetCumulativeStatus call*/
 LIB SM_STATUS getCumulativeStatus( const smbus handle );

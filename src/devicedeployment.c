@@ -1,6 +1,9 @@
+// Disable compilation on Arduino boards
+#ifndef ARDUINO
+
 #include "devicedeployment.h"
 #include "user_options.h"
-#include "crc.h"
+#include "utils/crc.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -1369,3 +1372,5 @@ const char *getLoadConfigurationStatusString( LoadConfigurationStatus stat )
     }
     return unknown;
 }
+
+#endif // ARDUINO

@@ -1,3 +1,5 @@
+#ifndef ARDUINO
+
 #include "simplemotion_private.h"
 #include "tcpclient.h"
 #include "user_options.h"
@@ -371,3 +373,4 @@ int parseIpAddress(const char *s, char *ip, unsigned short *port)
     return 0;
 }
 
+#endif // ARDUINO

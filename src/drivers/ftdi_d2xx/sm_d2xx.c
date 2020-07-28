@@ -7,6 +7,8 @@
  *      Author: Tero Kontkanen
  */
 
+#ifndef ARDUINO 
+
 #include "drivers/ftdi_d2xx/sm_d2xx.h"
 #include "simplemotion_private.h" //needed for timeout variable
 #include "drivers/ftdi_d2xx/third_party/ftd2xx.h"
@@ -306,3 +308,4 @@ smbool d2xxGetBusDeviceDetails( smint index, SM_BUS_DEVICE_INFO *info )
     return smfalse;
 }
 
+#endif // ARDUINO

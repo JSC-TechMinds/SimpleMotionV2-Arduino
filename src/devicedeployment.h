@@ -12,6 +12,9 @@
 #ifndef SMDEPLOYMENTTOOL_H
 #define SMDEPLOYMENTTOOL_H
 
+// Disable compilation on Arduino boards
+#ifndef ARDUINO
+
 #ifdef WIN32
 //dll specs
 #ifdef BUILD_DLL
@@ -183,4 +186,5 @@ smbool smGetDeviceFirmwareUniqueID( smbus smhandle, int deviceaddress, smuint32 
 #ifdef __cplusplus
 }
 #endif
+#endif // ARDUINO
 #endif // SMDEPLOYMENTTOOL_H
