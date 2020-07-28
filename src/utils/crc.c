@@ -5,8 +5,8 @@
  * Description: Slow and fast implementations of the CRC standards.
  *
  * Notes:       The parameters for each supported CRC standard are
- *				defined in the header file crc.h.  The implementations
- *				here should stand up to further additions to that list.
+ *              defined in the header file crc.h.  The implementations
+ *              here should stand up to further additions to that list.
  *
  * 
  * Copyright (c) 2000 by Michael Barr.  This software is placed into
@@ -21,22 +21,26 @@
  * Derive parameters from the standard-specific parameters in crc.h.
  */
 #define WIDTH    (8 * sizeof(crc))
+#ifdef ARDUINO
+#define TOPBIT   (1L << (WIDTH - 1))
+#else
 #define TOPBIT   (1 << (WIDTH - 1))
+#endif
 
 #if (REFLECT_DATA == TRUE)
 #undef  REFLECT_DATA
-#define REFLECT_DATA(X)			((unsigned char) reflect((X), 8))
+#define REFLECT_DATA(X)         ((unsigned char) reflect((X), 8))
 #else
 #undef  REFLECT_DATA
-#define REFLECT_DATA(X)			(X)
+#define REFLECT_DATA(X)         (X)
 #endif
 
 #if (REFLECT_REMAINDER == TRUE)
 #undef  REFLECT_REMAINDER
-#define REFLECT_REMAINDER(X)	((crc) reflect((X), WIDTH))
+#define REFLECT_REMAINDER(X)    ((crc) reflect((X), WIDTH))
 #else
 #undef  REFLECT_REMAINDER
-#define REFLECT_REMAINDER(X)	(X)
+#define REFLECT_REMAINDER(X)    (X)
 #endif
 
 
@@ -45,38 +49,38 @@
  * Function:    reflect()
  * 
  * Description: Reorder the bits of a binary sequence, by reflecting
- *				them about the middle position.
+ *              them about the middle position.
  *
- * Notes:		No checking is done that nBits <= 32.
+ * Notes:       No checking is done that nBits <= 32.
  *
- * Returns:		The reflection of the original data.
+ * Returns:     The reflection of the original data.
  *
  *********************************************************************/
 static unsigned long
 reflect(unsigned long data, unsigned char nBits)
 {
-	unsigned long  reflection = 0x00000000;
-	unsigned char  bit;
+    unsigned long  reflection = 0x00000000;
+    unsigned char  bit;
 
-	/*
-	 * Reflect the data about the center bit.
-	 */
-	for (bit = 0; bit < nBits; ++bit)
-	{
-		/*
-		 * If the LSB bit is set, set the reflection of it.
-		 */
-		if (data & 0x01)
-		{
-			reflection |= (1 << ((nBits - 1) - bit));
-		}
+    /*
+     * Reflect the data about the center bit.
+     */
+    for (bit = 0; bit < nBits; ++bit)
+    {
+        /*
+         * If the LSB bit is set, set the reflection of it.
+         */
+        if (data & 0x01)
+        {
+            reflection |= (1 << ((nBits - 1) - bit));
+        }
 
-		data = (data >> 1);
-	}
+        data = (data >> 1);
+    }
 
-	return (reflection);
+    return (reflection);
 
-}	/* reflect() */
+}   /* reflect() */
 
 
 /*********************************************************************
@@ -85,17 +89,17 @@ reflect(unsigned long data, unsigned char nBits)
  * 
  * Description: Compute the CRC of a given message.
  *
- * Notes:		
+ * Notes:       
  *
- * Returns:		The CRC of the message.
+ * Returns:     The CRC of the message.
  *
  *********************************************************************/
 crc
 crcSlow(unsigned char const message[], int nBytes)
 {
     crc            remainder = INITIAL_REMAINDER;
-	int            byte;
-	unsigned char  bit;
+    int            byte;
+    unsigned char  bit;
 
 
     /*
@@ -106,7 +110,11 @@ crcSlow(unsigned char const message[], int nBytes)
         /*
          * Bring the next byte into the remainder.
          */
+        #ifdef ARDUINO
+        remainder ^= (REFLECT_DATA(message[byte]) << 8);
+        #else
         remainder ^= (REFLECT_DATA(message[byte]) << (WIDTH - 8));
+        #endif
 
         /*
          * Perform modulo-2 division, a bit at a time.
@@ -144,19 +152,23 @@ crc  crcTable[256];
  * 
  * Description: Populate the partial CRC lookup table.
  *
- * Notes:		This function must be rerun any time the CRC standard
- *				is changed.  If desired, it can be run "offline" and
- *				the table results stored in an embedded system's ROM.
+ * Notes:       This function must be rerun any time the CRC standard
+ *              is changed.  If desired, it can be run "offline" and
+ *              the table results stored in an embedded system's ROM.
  *
- * Returns:		None defined.
+ * Returns:     None defined.
  *
  *********************************************************************/
 void
 crcInit(void)
 {
-    crc			   remainder;
-	int			   dividend;
-	unsigned char  bit;
+    crc            remainder;
+#ifdef ARDUINO
+    long           dividend;
+#else
+    int            dividend;
+#endif
+    unsigned char  bit;
 
 
     /*
@@ -176,7 +188,7 @@ crcInit(void)
         {
             /*
              * Try to divide the current data bit.
-             */			
+             */         
             if (remainder & TOPBIT)
             {
                 remainder = (remainder << 1) ^ POLYNOMIAL;
@@ -202,17 +214,17 @@ crcInit(void)
  * 
  * Description: Compute the CRC of a given message.
  *
- * Notes:		crcInit() must be called first.
+ * Notes:       crcInit() must be called first.
  *
- * Returns:		The CRC of the message.
+ * Returns:     The CRC of the message.
  *
  *********************************************************************/
 crc
 crcFast(unsigned char const message[], int nBytes)
 {
-    crc	           remainder = INITIAL_REMAINDER;
+    crc            remainder = INITIAL_REMAINDER;
     unsigned char  data;
-	int            byte;
+    int            byte;
 
 
     /*
@@ -221,7 +233,7 @@ crcFast(unsigned char const message[], int nBytes)
     for (byte = 0; byte < nBytes; ++byte)
     {
         data = REFLECT_DATA(message[byte]) ^ (remainder >> (WIDTH - 8));
-  		remainder = crcTable[data] ^ (remainder << 8);
+        remainder = crcTable[data] ^ (remainder << 8);
     }
 
     /*
@@ -239,21 +251,21 @@ crcFast(unsigned char const message[], int nBytes)
  *
  * Description: Compute the CRC of a given message.
  *
- * Notes:		crcInit() must be called first.
+ * Notes:       crcInit() must be called first.
  *
- * Returns:		The CRC of the message.
+ * Returns:     The CRC of the message.
  *
  *********************************************************************/
 crc bbb_remainder;
 void crcFastByteByByteInit()
 {
-	bbb_remainder = INITIAL_REMAINDER;
+    bbb_remainder = INITIAL_REMAINDER;
 }
 
 void crcFastByteByByteFeed(unsigned char const message)
 {
     unsigned char data = REFLECT_DATA(message) ^ (bbb_remainder >> (WIDTH - 8));
-	bbb_remainder = crcTable[data] ^ (bbb_remainder << 8);
+    bbb_remainder = crcTable[data] ^ (bbb_remainder << 8);
 }
 
 crc  crcFastByteByByteGetResult()

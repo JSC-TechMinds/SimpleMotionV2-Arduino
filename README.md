@@ -1,5 +1,4 @@
-[![Linux Build Status](https://travis-ci.org/GraniteDevices/SimpleMotionV2.svg?branch=master)](https://travis-ci.org/GraniteDevices/SimpleMotionV2)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/GraniteDevices/SimpleMotionV2)](https://ci.appveyor.com/project/TeroK/simplemotionv2)
+[![Linux Build Status](https://travis-ci.com/JSC-electronics/SimpleMotionV2-Arduino.svg?branch=master)](https://travis-ci.com/github/JSC-electronics/SimpleMotionV2-Arduino)
 
 SimpleMotionV2 for Arduino
 ==========================

@@ -58,14 +58,16 @@ void smBDinit()
 smbusdevicehandle smBDOpen( const char *devicename )
 {
 #ifdef ENABLE_BUILT_IN_DRIVERS
-    smbusdevicehandle h;
-
 #if defined(CONTROLLINO_MAXI) || defined(CONTROLLINO_MEGA)
+    smbusdevicehandle h;
+    
     h=smBDOpenWithCallbacks( devicename, controllinoRs485PortOpen, controllinoRs485PortClose, controllinoRs485PortRead, controllinoRs485PortWrite, controllinoRs485PortMiscOperation );
     if(h>=0) return h;//was success
 #elif ARDUINO
     smDebug( -1, SMDebugHigh, "smBDOpen Unsupported Arduino board.");
 #else
+    smbusdevicehandle h;
+
     //try opening with all drivers:
     h=smBDOpenWithCallbacks( devicename, serialPortOpen, serialPortClose, serialPortRead, serialPortWrite, serialPortMiscOperation );
     if(h>=0) return h;//was success

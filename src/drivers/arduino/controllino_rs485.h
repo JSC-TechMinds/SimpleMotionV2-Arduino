@@ -12,6 +12,10 @@
 #ifndef CONTROLLINO_RS485_H
 #define CONTROLLINO_RS485_H
 
+#ifdef ARDUINO
+#include <pins_arduino.h>
+#endif
+
 #if defined(CONTROLLINO_MAXI) || defined(CONTROLLINO_MEGA)
 
 #include "simplemotion_private.h"
