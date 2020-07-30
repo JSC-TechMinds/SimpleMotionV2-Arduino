@@ -14,6 +14,9 @@
 #ifdef ARDUINO
 #define ENABLE_BUILT_IN_DRIVERS
 #define SM_MAX_BUSES 1
+
+// Uncomment to enable M5stack driver
+#define M5STACK_RS485
 #else
 #define SM_MAX_BUSES 10
 #endif

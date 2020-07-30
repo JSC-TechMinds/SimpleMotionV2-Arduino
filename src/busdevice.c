@@ -5,6 +5,7 @@
 #include "drivers/tcpip/tcpclient.h"
 #include "drivers/ftdi_d2xx/sm_d2xx.h"
 #include "drivers/arduino/controllino_rs485.h"
+#include "drivers/arduino/m5stack_rs485.h"
 
 #include <string.h>
 #include <errno.h>
@@ -62,6 +63,11 @@ smbusdevicehandle smBDOpen( const char *devicename )
     smbusdevicehandle h;
     
     h=smBDOpenWithCallbacks( devicename, controllinoRs485PortOpen, controllinoRs485PortClose, controllinoRs485PortRead, controllinoRs485PortWrite, controllinoRs485PortMiscOperation );
+    if(h>=0) return h;//was success
+#elif defined(ESP32) && defined(M5STACK_RS485)
+    smbusdevicehandle h;
+    
+    h=smBDOpenWithCallbacks( devicename, m5stackRs485PortOpen, m5stackRs485PortClose, m5stackRs485PortRead, m5stackRs485PortWrite, m5stackRs485PortMiscOperation );
     if(h>=0) return h;//was success
 #elif ARDUINO
     smDebug( -1, SMDebugHigh, "smBDOpen Unsupported Arduino board.");
