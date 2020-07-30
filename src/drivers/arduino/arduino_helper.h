@@ -21,6 +21,14 @@
 typedef void* ArduinoSerial;
 
 #ifdef __cplusplus
+#ifdef ESP32
+#include <Wire.h>
+#include <FS.h>
+#include <SPIFFS.h>
+#include <SD.h>
+#include <HTTPClient.h>
+#endif
+
 extern "C" {
 #endif
 

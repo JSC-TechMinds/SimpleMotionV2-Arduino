@@ -21,7 +21,7 @@
  * Derive parameters from the standard-specific parameters in crc.h.
  */
 #define WIDTH    (8 * sizeof(crc))
-#ifdef ARDUINO
+#ifdef __AVR__
 #define TOPBIT   (1L << (WIDTH - 1))
 #else
 #define TOPBIT   (1 << (WIDTH - 1))
@@ -110,7 +110,7 @@ crcSlow(unsigned char const message[], int nBytes)
         /*
          * Bring the next byte into the remainder.
          */
-        #ifdef ARDUINO
+        #ifdef __AVR__
         remainder ^= (REFLECT_DATA(message[byte]) << 8);
         #else
         remainder ^= (REFLECT_DATA(message[byte]) << (WIDTH - 8));
@@ -163,7 +163,7 @@ void
 crcInit(void)
 {
     crc            remainder;
-#ifdef ARDUINO
+#ifdef __AVR__
     long           dividend;
 #else
     int            dividend;

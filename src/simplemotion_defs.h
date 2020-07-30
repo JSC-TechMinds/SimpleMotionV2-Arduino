@@ -81,8 +81,8 @@
 
 #ifndef BV
 //bitvise shifts
-#ifdef ARDUINO
-/* Int on Arduino is only 2 bytes, which is not enough
+#ifdef __AVR__
+/* Int on Arduino AVR boards is only 2 bytes, which is not enough
  * for all values defined here. We'll use long instead.
  */
 #define BV(bit) (1L<<(bit))
