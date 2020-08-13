@@ -1,0 +1,12 @@
+{
+  "name": "SimpleMotionV2-Arduino",
+  "keywords": "arduino, simplemotion, ioni, argon, granitedevices",
+  "description": "An Arduino library for controlling SimpleMotion IONI/ARGON drives from Granite Devices. It was ported from the official SimpleMotionV2 library.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/JSC-electronics/SimpleMotionV2-Arduino"
+  },
+  "frameworks": "arduino",
+  "platforms": "avr,esp32"
+}

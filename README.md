@@ -14,6 +14,68 @@ In order to add support for Arduino, we had to fork the original SimpleMotion V2
 ## Supported features
 All features, which could be ported into Arduino, were adapted. We've modified all compulsory files, and also the `bufferedmotion.c/.h` library for buffered motion stream applications.
 
+## Supported boards
+This library supports Controllino Maxi/Mega and M5Stack Core out-of-the-box.
+
+### Controllino Maxi/Mega
+To initialize SMbus with Controllino, call this function inside your sketch:
+```c
+#include <simplemotion.h>
+
+void setup() {
+smbus handle = smOpenBus("Serial2");
+}
+```
+
+`Serial2` is the default port used in Controllino Maxi/Mega, and the [Controllino driver](src/drivers/arduino/controllino_rs485.h) inside the library expects such a name to be activated.
+
+> Note: Default baudrate of SMbus is 460,800 bauds/second. During our testing we've found that Controllino is unable to achieve this baudrate with required precision. As a result, you won't get any response from the IONI drive. Partial solution to this problem could be changing baudrate on the IONI drive with the `SMP_BUS_SPEED` command. However, you need to use another device, which can communicate with IONI (like their USB module with Granity software), and please remember IONI will discard this setting after powering down.
+
+### M5stack Core
+If you use M5stack, add following flag inside your sketch:
+```c
+#define M5STACK_RS485
+```
+
+Alternatively, you can modify the file `user_options.h` [found](src/user_options.h) in the library source. We've successfully tested SMBus communication with IONI using baudrate of 2,000,000 bauds/second.
+
+Initialization works the same as with Controllino, except default port used for RS485 communication is `Serial3`:
+```c
+#include <simplemotion.h>
+
+void setup() {
+smbus handle = smOpenBus("Serial3");
+}
+```
+
+### Other Arduino boards
+Adding support for other boards is relatively simple. Instead of calling `smOpenBus(...)` you need to call `smOpenBusWithCallbacks(...)`, and implement callbacks for opening, closing, reading, and writing from/to RS485. Take a look at the [Controllino driver](src/drivers/arduino/controllino_rs485.h).
+
+## Debugging
+You can debug your SimpleMotion communication using function `smSetDebugOutput(/*trace level*/, &Serial)`. By specifying `trace level` you control how much information does the library print to the `Serial`.
+
+**Supported trace levels:**
+- SMDebugOff=no debug prints (default)
+- SMDebugLow=only some excepetion/errors printed
+- SMDebugMid=some common function calls printed
+- SMDebugHigh=more details of function calls/bus communication printed
+- SMDebugTrace=print all raw RX/TX data and parsed read values of RX data
+
+> Original SMBus library writes debug messages to the file. In Arduino we used serial line for that purpose. Note that debugging messages will make your code slow. You should enable that only in simple sketches where you don't send much data. In production code you can check for `SM_STATUS` values returned by the functions:
+
+```c
+// Read a value
+SM_STATUS result;
+smint32 readValue;
+result = smRead1Parameter(handle, 1, SMP_VEL_I, &readValue);
+
+if (result != SM_OK) {
+printf("Failed to read a parameter from remote drive!\n");
+} else {
+printf("Velocity I gain: %d\n", readValue);
+}
+```
+
 ## C++ Issue
 Arduino IDE determines whether a library is C-compatible or C++-compatible based on file extensions. In order to compile the main `simplemotion.c` library in C++ mode, we had to rename it to `simplemotion.cpp`. Otherwise, we couldn't call object methods, like the `Serial.println(...)`.
 
