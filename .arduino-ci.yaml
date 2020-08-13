@@ -1,0 +1,21 @@
+compile:
+  libraries: ~
+  platforms:
+    - uno
+    - due
+    - zero
+    - leonardo
+    - mega2560
+    # - esp32
+    # - esp8266
+
+unittest:
+  libraries: ~
+  platforms:
+    - uno
+    - due
+    - zero
+    - leonardo
+    - mega2560
+    # - esp32
+    # - esp8266
