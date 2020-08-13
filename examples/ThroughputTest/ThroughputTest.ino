@@ -1,3 +1,8 @@
+/**
+ * This is an example for testing throughput on a bus. Arduino sends up to COUNTER_LIMIT packets to IONI drive,
+ * while it measures elapsed time. From that we calculate average throughput of samples/second.
+ */
+
 #include <Arduino.h>
 #include <simplemotion.h>
 

@@ -1,3 +1,7 @@
+/**
+ * This is an example showing how to read a parameter from IONI drive using SimpleMotionV2 bus.
+ */
+
 #include <Arduino.h>
 #include <simplemotion.h>
 

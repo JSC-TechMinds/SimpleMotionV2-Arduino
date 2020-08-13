@@ -1,7 +1,9 @@
-[![Linux Build Status](https://travis-ci.com/JSC-electronics/SimpleMotionV2-Arduino.svg?branch=master)](https://travis-ci.com/github/JSC-electronics/SimpleMotionV2-Arduino)
-
 SimpleMotionV2 for Arduino
 ==========================
+[![Build Status](https://travis-ci.com/JSC-electronics/SimpleMotionV2-Arduino.svg?branch=master)](https://travis-ci.com/github/JSC-electronics/SimpleMotionV2-Arduino)
+[![GitHub release](https://img.shields.io/github/release/JSC-electronics/SimpleMotionV2-Arduino.svg?maxAge=3600)](https://github.com/JSC-electronics/SimpleMotionV2-Arduino/releases)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/JSC-electronics/ObjectButton/blob/master/LICENSE)
+[![Donate](https://img.shields.io/badge/donate-PayPal-blueviolet.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SESX9ABM7V8KA&source=url)
 
 This is a SimpleMotion V2 library, which is an API to control motor controller from any programmable platform, such as PC (Linux, Win, Mac), Rasperry Pi, MCU or PLC system.
 
@@ -23,7 +25,7 @@ To initialize SMbus with Controllino, call this function inside your sketch:
 #include <simplemotion.h>
 
 void setup() {
-smbus handle = smOpenBus("Serial2");
+smbus handle = smOpenBus("Serial3");
 }
 ```
 
@@ -32,19 +34,19 @@ smbus handle = smOpenBus("Serial2");
 > Note: Default baudrate of SMbus is 460,800 bauds/second. During our testing we've found that Controllino is unable to achieve this baudrate with required precision. As a result, you won't get any response from the IONI drive. Partial solution to this problem could be changing baudrate on the IONI drive with the `SMP_BUS_SPEED` command. However, you need to use another device, which can communicate with IONI (like their USB module with Granity software), and please remember IONI will discard this setting after powering down.
 
 ### M5stack Core
-If you use M5stack, add following flag inside your sketch:
+If you use M5stack, add the following flag inside your sketch:
 ```c
 #define M5STACK_RS485
 ```
 
 Alternatively, you can modify the file `user_options.h` [found](src/user_options.h) in the library source. We've successfully tested SMBus communication with IONI using baudrate of 2,000,000 bauds/second.
 
-Initialization works the same as with Controllino, except default port used for RS485 communication is `Serial3`:
+Initialization works the same as with Controllino, except default port used for RS485 communication is `Serial2`:
 ```c
 #include <simplemotion.h>
 
 void setup() {
-smbus handle = smOpenBus("Serial3");
+smbus handle = smOpenBus("Serial2");
 }
 ```
 
@@ -78,6 +80,17 @@ printf("Velocity I gain: %d\n", readValue);
 
 ## C++ Issue
 Arduino IDE determines whether a library is C-compatible or C++-compatible based on file extensions. In order to compile the main `simplemotion.c` library in C++ mode, we had to rename it to `simplemotion.cpp`. Otherwise, we couldn't call object methods, like the `Serial.println(...)`.
+
+## License
+Copyright (c) JSC electronics and Granite Devices.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+## Support
+We hope our library helped to speed up your project development. You can support our effort to convert coffe and pizza into a code with a small donation. Any support is much appreciated.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SESX9ABM7V8KA&source=url)
+
+> Further documentation is from original library as-is.
 
 Files & usage
 =============

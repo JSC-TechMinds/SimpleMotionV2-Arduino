@@ -1,3 +1,9 @@
+/**
+ * This is an example showing how to use SimpleMotionV2-Arduino with Arduino board without explicit support.
+ * You need to implement a few callback methods. For inspiration please take a look at existing Arduino drivers:
+ * https://github.com/JSC-electronics/SimpleMotionV2-Arduino/tree/master/src/drivers/arduino
+ */
+
 #include <Arduino.h>
 #include <simplemotion.h>
 #define RX_PIN 16
@@ -37,9 +43,7 @@ void loop() {
 
 smBusdevicePointer arduinoRs485PortOpen(const char * port_device_name, smint32 baudrate_bps, smbool *success)
 {
-    // TODO: Open RS485 communication
-    Serial2.begin(baudrate_bps, SERIAL_8N1, RX_PIN, TX_PIN);
-
+    Serial.print("Opening bus with baudrate ");
     *success=smtrue;
 
     // Serial device is available as a global object. No need to pass a reference.
@@ -48,37 +52,28 @@ smBusdevicePointer arduinoRs485PortOpen(const char * port_device_name, smint32 b
 
 
 smint32 arduinoRs485PortRead(smBusdevicePointer busdevicePointer, smuint8 *buf, smint32 size)
-{
-    smint32 n = 0;
-    n = Serial2.readBytes(buf, size);
-
-    return n;
+{   
+    Serial.println("Reading data from SimpleMotion");
+    return 0;
 }
 
 
 
 smint32 arduinoRs485PortWrite(smBusdevicePointer busdevicePointer, unsigned char *buf, smint32 size)
 {
-    smint32 n = Serial2.write(buf, size);
-    Serial2.flush(); // wait until the trasmission is complete
-
-    return n;
+    Serial.println("Writing data to SimpleMotion");
+    return 0;
 }
 
 smbool arduinoRs485PortMiscOperation(smBusdevicePointer busdevicePointer, BusDeviceMiscOperationType operation)
 {
     switch(operation) {
         case MiscOperationPurgeRX:
-            //flush any stray bytes from device receive buffer that may reside in it
-            while (Serial2.available() > 0) {
-                // There is no method to flush buffer. We'll keep reading until it's empty.
-                Serial2.read();
-            }
-
+            Serial.println("Flushing SimpleMotion RX data");
             return smtrue;
             break;
     case MiscOperationFlushTX:
-        Serial2.flush();
+        Serial.println("Flushing SimpleMotion TX data");
         return smtrue;
         break;
     default:
@@ -89,5 +84,5 @@ smbool arduinoRs485PortMiscOperation(smBusdevicePointer busdevicePointer, BusDev
 
 void arduinoRs485PortClose(smBusdevicePointer busdevicePointer)
 {
-    Serial2.end();
+    Serial.println("Closing SimpleMotion bus");
 }

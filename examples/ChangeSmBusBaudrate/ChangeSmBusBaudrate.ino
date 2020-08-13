@@ -1,3 +1,9 @@
+/**
+ * This is an example showing how to change baudrate on SimpleMotion bus.
+ * Note: Default baudrate is 460,800 bps. IONI devices set this baudrate after each boot.
+ * In cases that you're unable to communicate with the driver, please power-cycle your drive.
+ */
+
 #include <Arduino.h>
 #include <simplemotion.h>
 

@@ -1,3 +1,10 @@
+/**
+ * This is an example where Arduino periodically changes velocity in opposite directions.
+ * Please make sure your drive is configured to control servo through velocity setpoints.
+ * Also make sure you've specified correct IONI device port.
+ * Note: For configuring most of the servo parameters, use official Granity app.
+ */
+
 #include <Arduino.h>
 #include <simplemotion.h>
 
