@@ -1,7 +1,7 @@
 /**
  * This is an example showing how to use SimpleMotionV2-Arduino with Arduino board without explicit support.
  * You need to implement a few callback methods. For inspiration please take a look at existing Arduino drivers:
- * https://github.com/JSC-electronics/SimpleMotionV2-Arduino/tree/master/src/drivers/arduino
+ * https://github.com/JSC-TechMinds/SimpleMotionV2-Arduino/tree/main/src/drivers/arduino
  */
 
 #include <Arduino.h>

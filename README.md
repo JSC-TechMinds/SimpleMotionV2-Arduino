@@ -1,9 +1,9 @@
 SimpleMotionV2 for Arduino
 ==========================
-[![Arduino_CI](https://github.com/JSC-electronics/SimpleMotionV2-Arduino/actions/workflows/arduino_ci.yml/badge.svg)](https://github.com/JSC-electronics/SimpleMotionV2-Arduino/actions/workflows/arduino_ci.yml)
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/JSC-electronics/SimpleMotionV2-Arduino/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/JSC-electronics/SimpleMotionV2-Arduino.svg?maxAge=3600)](https://github.com/JSC-electronics/SimpleMotionV2-Arduino/releases)
-[![JSC electronics](https://img.shields.io/badge/JSC-electronics-green.svg)](https://www.jsce.cz/)
+[![Arduino_CI](https://github.com/JSC-TechMinds/SimpleMotionV2-Arduino/actions/workflows/arduino_ci.yml/badge.svg)](https://github.com/JSC-TechMinds/SimpleMotionV2-Arduino/actions/workflows/arduino_ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/JSC-TechMinds/SimpleMotionV2-Arduino/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/JSC-TechMinds/SimpleMotionV2-Arduino.svg?maxAge=3600)](https://github.com/JSC-TechMinds/SimpleMotionV2-Arduino/releases)
+[![JSC TechMinds](https://img.shields.io/badge/JSC-TechMinds-green.svg)](https://www.jsctm.cz/)
 [![Donate](https://img.shields.io/badge/donate-PayPal-blueviolet.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SESX9ABM7V8KA&source=url)
 
 This is a SimpleMotion V2 library, which is an API to control motor controller from any programmable platform, such as PC (Linux, Win, Mac), Rasperry Pi, MCU or PLC system.
@@ -83,7 +83,7 @@ printf("Velocity I gain: %d\n", readValue);
 Arduino IDE determines whether a library is C-compatible or C++-compatible based on file extensions. In order to compile the main `simplemotion.c` library in C++ mode, we had to rename it to `simplemotion.cpp`. Otherwise, we couldn't call object methods, like the `Serial.println(...)`.
 
 ## License
-Copyright (c) JSC electronics and Granite Devices.
+Copyright (c) JSC TechMinds and Granite Devices.
 Licensed under the [Apache-2.0](LICENSE) license.
 
 ## Support
